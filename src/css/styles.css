@@ -1,16 +1,6 @@
 /* Tailwind Directives */
 @import "tailwindcss";
 
-/* Custom Theme Variables - Tailwind v4 Style */
-@theme {
-  /* Custom Colors - WARNA KUSTOM UNTUK WEBSITE RENTAL MOBIL */
-  --color-black-nav: #121212;
-  --color-primary-gold: #aa9651;
-  --color-gold-hover: #7a6c3c;
-}
-
-/* Custom Component Styles */
-
 /* Card Car Animation */
 .card-car {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

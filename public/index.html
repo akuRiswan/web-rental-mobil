@@ -5,42 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RENTAL MOBIL - Temukan Mobil Impian Anda</title>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS - CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS Output (Pastikan path ini benar sesuai folder Anda) -->
-    <link href="/src/css/output.css" rel="stylesheet" />
+    <!-- CSS (Custom Theme) -->
+    <style type="text/tailwindcss">
+      @theme {
+        --color-black-nav: #121212;
+        --color-primary-gold: #aa9651;
+        --color-gold-hover: #7a6c3c;
+      }
+      .card-car {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .card-car:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      }
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <!-- Toastify CSS (Untuk notifikasi pop-up) -->
+    <!-- Toastify CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
   </head>
   <body class="bg-gray-50 font-sans">
-    <!-- Header / Navbar -->
+    <!-- Header -->
     <header class="bg-black-nav text-white shadow-lg sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-        <!-- Logo -->
         <a href="#" class="flex items-center space-x-2">
           <i class="fas fa-car text-primary-gold text-2xl"></i>
           <span class="text-2xl font-black tracking-wider">RENTALMOBIL</span>
         </a>
 
-        <!-- Desktop Navigation -->
         <nav class="hidden md:flex space-x-8 items-center font-semibold">
           <a href="#home" class="hover:text-primary-gold transition duration-200">Home</a>
           <a href="#daftar-mobil" class="hover:text-primary-gold transition duration-200">Daftar Mobil</a>
           <a href="#contact" class="hover:text-primary-gold transition duration-200">Kontak</a>
-
-          <!-- Tombol Logout (Disembunyikan secara default, muncul jika login) -->
           <button id="btn-logout" class="hidden text-red-500 hover:text-red-400 font-bold">
             <i class="fas fa-sign-out-alt mr-1"></i> Logout
           </button>
-
           <a
             href="#"
             class="bg-primary-gold text-black-nav px-5 py-2 rounded-lg font-bold hover:bg-gold-hover transition duration-200 shadow-md"
@@ -48,7 +62,6 @@
           >
         </nav>
 
-        <!-- Hamburger Button (Mobile) -->
         <div class="md:hidden">
           <button id="mobile-menu-button" class="text-white focus:outline-none">
             <i class="fas fa-bars text-2xl"></i>
@@ -61,12 +74,9 @@
         <a href="#home" class="block py-2 px-4 text-sm hover:bg-gray-800">Home</a>
         <a href="#daftar-mobil" class="block py-2 px-4 text-sm hover:bg-gray-800">Daftar Mobil</a>
         <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-800">Kontak</a>
-
-        <!-- Tombol Logout Mobile -->
         <button id="btn-logout-mobile" class="hidden w-full text-left py-2 px-4 text-sm text-red-500 hover:bg-gray-800 font-bold">
           Logout Owner
         </button>
-
         <a href="#" class="block py-3 px-4 text-sm bg-primary-gold text-black-nav text-center font-bold">Pesan Sekarang</a>
       </div>
     </header>
@@ -86,7 +96,6 @@
         </a>
       </div>
       <div class="md:w-1/2 flex justify-center">
-        <!-- Gambar Hero -->
         <img
           src="https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1000&auto=format&fit=crop"
           alt="Mobil Premium Rental"
@@ -125,13 +134,24 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-12">
           <h2 class="text-4xl font-extrabold text-black-nav mb-4 md:mb-0">Daftar Mobil</h2>
 
-          <!-- Tombol Admin Reset Data (Hanya muncul jika login) -->
-          <button
-            id="btn-seed-data"
-            class="hidden bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-black-nav shadow-lg transform active:scale-95 transition"
-          >
-            <i class="fas fa-database mr-2"></i> Reset Data (Owner Only)
-          </button>
+          <!-- AREA TOMBOL OWNER (CRUD) -->
+          <div class="flex gap-3">
+            <!-- Tombol Tambah Mobil (Baru) -->
+            <button
+              id="btn-add-car"
+              class="hidden bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 shadow-lg transform active:scale-95 transition"
+            >
+              <i class="fas fa-plus mr-2"></i> Tambah Mobil
+            </button>
+
+            <!-- Tombol Reset Data -->
+            <button
+              id="btn-seed-data"
+              class="hidden bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-black-nav shadow-lg transform active:scale-95 transition"
+            >
+              <i class="fas fa-database mr-2"></i> Reset Default
+            </button>
+          </div>
         </div>
 
         <!-- Loading Indicator -->
@@ -140,7 +160,7 @@
           <p class="mt-2 text-gray-500 font-medium">Sedang memuat data mobil...</p>
         </div>
 
-        <!-- Car Grid Container (Diisi oleh JavaScript) -->
+        <!-- Car Grid Container -->
         <div id="car-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
 
         <p class="text-center mt-12 text-lg text-gray-700">*Ketersediaan mobil diperbarui secara <b>Real-Time</b>.</p>
@@ -150,7 +170,6 @@
     <!-- Footer -->
     <footer id="contact" class="bg-black-nav text-white py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Footer Column 1 -->
         <div>
           <a href="#" class="flex items-center space-x-2 mb-4">
             <i class="fas fa-car text-primary-gold text-2xl"></i>
@@ -158,8 +177,6 @@
           </a>
           <p class="text-gray-400 text-sm">Pilihan tepat untuk perjalanan bisnis dan liburan Anda.</p>
         </div>
-
-        <!-- Footer Column 2 -->
         <div>
           <h4 class="text-xl font-bold mb-4 border-b-2 border-primary-gold inline-block">Kontak Kami</h4>
           <ul class="space-y-2 text-gray-400">
@@ -170,8 +187,6 @@
             </li>
           </ul>
         </div>
-
-        <!-- Footer Column 3 (Owner Area) -->
         <div>
           <h4 class="text-xl font-bold mb-4 border-b-2 border-primary-gold inline-block">Owner Area</h4>
           <p class="text-gray-400 text-sm mb-4">Login khusus pemilik untuk update ketersediaan mobil.</p>
@@ -184,62 +199,44 @@
     <!-- LOGIN MODAL (Hidden by default) -->
     <div
       id="login-modal"
-      class="fixed inset-0 bg-black bg-opacity-80 z-100 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity"
+      class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity"
     >
       <div class="bg-white rounded-xl max-w-sm w-full p-8 shadow-2xl relative animate-[fadeIn_0.3s_ease-out]">
-        <!-- Tombol Close Modal -->
         <button id="btn-close-login" class="absolute top-4 right-4 text-gray-400 hover:text-black transition">
           <i class="fas fa-times text-xl"></i>
         </button>
-
         <div class="text-center mb-6">
           <i class="fas fa-user-shield text-4xl text-primary-gold mb-2"></i>
           <h3 class="text-2xl font-bold text-black-nav">Login Owner</h3>
           <p class="text-sm text-gray-500">Masuk untuk mengelola ketersediaan mobil.</p>
         </div>
-
         <form id="login-form" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-envelope"></i></span>
-              <input
-                type="email"
-                id="email"
-                class="w-full pl-10 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-primary-gold focus:border-primary-gold outline-none transition"
-                placeholder="admin@rental.com"
-                required
-              />
-            </div>
+            <input
+              type="email"
+              id="email"
+              class="w-full pl-3 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-primary-gold outline-none transition"
+              placeholder="admin@rental.com"
+              required
+            />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-lock"></i></span>
-              <input
-                type="password"
-                id="password"
-                class="w-full pl-10 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-primary-gold focus:border-primary-gold outline-none transition"
-                placeholder="••••••••"
-                required
-              />
-            </div>
+            <input
+              type="password"
+              id="password"
+              class="w-full pl-3 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-primary-gold outline-none transition"
+              placeholder="••••••••"
+              required
+            />
           </div>
-          <button
-            type="submit"
-            class="w-full bg-black-nav text-white font-bold py-3 rounded-lg hover:bg-gray-800 hover:shadow-lg transform active:scale-95 transition duration-200"
-          >
-            Masuk
-          </button>
+          <button type="submit" class="w-full bg-black-nav text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition">Masuk</button>
         </form>
       </div>
     </div>
 
-    <!-- Scripts -->
-    <!-- Library Toastify untuk notifikasi -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <!-- Script Utama (Type Module agar bisa import Firebase) -->
     <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>
