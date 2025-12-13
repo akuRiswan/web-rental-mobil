@@ -56,7 +56,6 @@ const initialCarData = [
 
 // --- HELPER FUNCTIONS ---
 const formatRupiah = (angka) => "Rp" + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
 const showToast = (message, type = "success") => {
   if (typeof Toastify === "function") {
     Toastify({
